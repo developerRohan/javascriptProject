@@ -28,7 +28,19 @@ var budgetController = (function(){
       exp:0,
       inc:0
     }
+      budget : 0,
+      percentage : -1
+
   };
+
+  var calculateTotal = function(type) {
+      var sum = 0;
+      data.allItems[type].forEach(function(cur) {
+          sum += cur.value;
+      });
+      data.totals[type] = sum;
+  };
+
 
 return{
   addItem : function(type , des , val){
@@ -49,6 +61,31 @@ return{
     data.allItems[type].push(newItem);
     return newItem;
   },
+
+  calculateBudget : function(){
+    //calculate the total income and expenses
+      calculateTotal('exp');
+      calculateTotal('inc');
+    //calculate the total budget
+      data.budget = data.totals.inc - data.totals.exp;
+    //calculate the percentages
+    if (data.totals.inc > data.totals.exp && data.totals.inc > 0) {
+          data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+      }else{
+          data.percentage = -1;
+      }
+
+  },
+
+  getBudget: function() {
+      return {
+          budget: data.budget,
+          totalInc: data.totals.inc,
+          totalExp: data.totals.exp,
+          percentage: data.percentage
+      };
+  },
+
 
   testing: function() {
             console.log(data);
@@ -126,6 +163,15 @@ var UIController = (function(){
 
 
 var controller = (function(budgetCtrl, UICtrl) {
+
+  var updateBudget = function(){
+        //update the budget
+          budgetCtrl.calculateBudget();
+        //return the budget
+        var budget =   budgetCtrl.getBudget();
+        //display the budget on UIController
+  };
+
   var ctrlAddItem = function(){
     //1.get the input value
   var input = UICtrl.getInput();
@@ -140,6 +186,9 @@ var controller = (function(budgetCtrl, UICtrl) {
 
       //4.clear the fields
       UICtrl.clearFields();
+
+      //calculate and update the budgetCtrl
+      updateBudget();
     }
   };
 
