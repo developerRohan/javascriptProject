@@ -18,19 +18,43 @@ var budgetController = (function(){
   //rather than declaring many variables , we can maintain all that in data structure
   //, thus we declare the 'data' data structure  and store instances of expenses and income
 
-  
+
    var data = {
      allItems : {
-      allExpenses: [],
-      allIncome: []
+      exp: [],
+      inc: []
     } ,
     totals : {
       exp:0,
       inc:0
     }
-      }
+  };
 
+return{
+  addItem : function(type , des , val){
+    var newItem  , ID ;
+
+    if (data.allItems[type].length > 0) {
+        ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+    } else {
+        ID = 0;
+    }
+
+    if(type === 'exp'){
+      newItem = new Expense(ID,des,val);
+    }else if (type === 'inc'){
+      newItem = new Income(ID,des,val);
+    }
+
+    data.allItems[type].push(newItem);
+    return newItem;
+  },
+
+  testing: function() {
+            console.log(data);
   }
+};
+
 })();
 
 
@@ -65,7 +89,11 @@ var controller = (function(budgetCtrl, UICtrl) {
   var ctrlAddItem = function(){
     //get the input value
     var input = UICtrl.getInput();
-    console.log(input);
+    //console.log(input);
+
+    //add the  item to the data structure
+      budgetCtrl.addItem(input.type , input.description , input.value);
+    //add the item to the interface
   }
 
   var setupEventListeners = function() {
