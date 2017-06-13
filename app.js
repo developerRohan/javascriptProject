@@ -1,6 +1,38 @@
 var budgetController = (function(){
 
+  var Expense = function(id , description , value){
+    this.id = id;
+    this.description = description;
+    this.value = value
+  };
+
+  var Income = function(id , description , value){
+    this.id = id;
+    this.description = description;
+    this.value = value
+  };
+
+   //var allExpenses = [];
+   //var allIncome = [];
+   //var totalExpenses = 0;
+  //rather than declaring many variables , we can maintain all that in data structure
+  //, thus we declare the 'data' data structure  and store instances of expenses and income
+
+  
+   var data = {
+     allItems : {
+      allExpenses: [],
+      allIncome: []
+    } ,
+    totals : {
+      exp:0,
+      inc:0
+    }
+      }
+
+  }
 })();
+
 
 
 var UIController = (function(){
@@ -25,6 +57,7 @@ var UIController = (function(){
         }
   };
 })();
+
 
 
 
