@@ -102,6 +102,20 @@ var UIController = (function(){
           document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
       },
 
+    clearFields: function() {
+          var fields, fieldsArr;
+
+          //query selector returns a list
+          fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+          // we convert the list to the array by using array functions to the list
+          fieldsArr = Array.prototype.slice.call(fields);
+          fieldsArr.forEach(function(current, index, array) {
+              current.value = "";
+          });
+
+          fieldsArr[0].focus();
+      },
+
         getDOMstrings: function() {
             return DOMstrings;
         }
@@ -113,15 +127,19 @@ var UIController = (function(){
 
 var controller = (function(budgetCtrl, UICtrl) {
   var ctrlAddItem = function(){
-    //get the input value
-    var input = UICtrl.getInput();
+    //1.get the input value
+  var input = UICtrl.getInput();
     //console.log(input);
-    if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
-        // 2. Add the item to the budget controller
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-        // 3. Add the item to the UI
-        UICtrl.addListItem(newItem, input.type);
+  if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+      // 2. Add the item to the budget controller
+      newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+
+      // 3. Add the item to the UI
+      UICtrl.addListItem(newItem, input.type);
+
+      //4.clear the fields
+      UICtrl.clearFields();
     }
   };
 
