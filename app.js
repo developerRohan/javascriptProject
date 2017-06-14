@@ -62,6 +62,18 @@ return{
     return newItem;
   },
 
+  deleteItem : function(type , ID){
+    var allIds = data.allItems[type].map(function(cur){
+      return cur.id;
+    });
+    var reqIndex = allIds.indexOf(ID);
+    if(index !== -1){
+      data.allItems[type].splice(reqIndex , 1);
+    }
+
+
+  },
+
   calculateBudget : function(){
     //calculate the total income and expenses
       calculateTotal('exp');
@@ -208,7 +220,7 @@ var controller = (function(budgetCtrl, UICtrl) {
   };
 
   var ctrlDeleteItem = function(){
-    
+
     //console.log(event.target); // event delegation
     var itemID, splitID, type, ID;
 
