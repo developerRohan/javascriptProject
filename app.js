@@ -62,15 +62,23 @@ return{
     return newItem;
   },
 
-  deleteItem : function(type , ID){
-    var allIds = data.allItems[type].map(function(cur){
-      return cur.id;
-    });
-    var reqIndex = allIds.indexOf(ID);
-    if(index !== -1){
-      data.allItems[type].splice(reqIndex , 1);
-    }
+  deleteItem: function(type, id) {
+      var ids, index;
 
+      // id = 6
+      //data.allItems[type][id];
+      // ids = [1 2 4  8]
+      //index = 3
+
+      ids = data.allItems[type].map(function(current) {
+          return current.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+          data.allItems[type].splice(index, 1);
+      }
 
   },
 
@@ -156,6 +164,12 @@ var UIController = (function(){
           document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
       },
 
+      deleteListItem: function(selectorID) {
+
+        var el = document.getElementById(selectorID);
+        el.parentNode.removeChild(el);
+
+    },
     clearFields: function() {
           var fields, fieldsArr;
 
@@ -219,7 +233,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     }
   };
 
-  var ctrlDeleteItem = function(){
+  var ctrlDeleteItem = function(event){
 
     //console.log(event.target); // event delegation
     var itemID, splitID, type, ID;
